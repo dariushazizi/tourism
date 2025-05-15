@@ -9,78 +9,125 @@
     <style>
         body {
             font-family: 'Vazirmatn', sans-serif; /* اعمال فونت وزیر */
-            background-color: #f8f8f8; /* پس‌زمینه روشن‌تر */
-            color: #333;
-            line-height: 1.7; /* افزایش فاصله خطوط برای خوانایی بهتر در متن فارسی */
+            background: linear-gradient(to bottom, #e0f2f7, #b2ebf2); /* پس‌زمینه گرادیان فیروزه‌ای ملایم */
+            color: #1a202c; /* رنگ متن تیره */
+            line-height: 1.8; /* افزایش فاصله خطوط برای خوانایی بهتر در متن فارسی */
+            padding-bottom: 40px; /* فاصله پایین صفحه */
+            min-height: 100vh; /* حداقل ارتفاع صفحه */
         }
         .container {
-            max-width: 700px; /* عرض کمتر برای تمرکز بیشتر */
-            margin: 30px auto; /* فاصله بیشتر از بالا و پایین */
-            padding: 0 20px; /* پدینگ بیشتر در کناره‌ها */
+            max-width: 800px; /* عرض کمی بیشتر برای محتوا */
+            margin: 40px auto; /* فاصله بیشتر از بالا و پایین */
+            padding: 0 24px; /* پدینگ بیشتر در کناره‌ها */
         }
         .card {
-            background-color: #fff;
-            border-radius: 8px; /* گوشه‌های کمی گرد */
-            padding: 25px; /* پدینگ داخلی بیشتر */
-            margin-bottom: 25px; /* فاصله بیشتر بین کارت‌ها */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* سایه بسیار ملایم */
-            transition: transform 0.2s ease-in-out;
-            border: 1px solid #eee; /* حاشیه بسیار نازک */
+            background-color: #ffffff; /* پس‌زمینه سفید */
+            border-radius: 15px; /* گوشه‌های گردتر */
+            padding: 30px; /* پدینگ داخلی بیشتر */
+            margin-bottom: 30px; /* فاصله بیشتر بین کارت‌ها */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* سایه ملایم‌تر و گسترده‌تر */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* انیمیشن نرم‌تر */
+            border: 1px solid #e0f2f7; /* حاشیه نازک فیروزه‌ای */
+            position: relative; /* برای المان‌های دکوری */
+            overflow: hidden; /* برای اطمینان از عدم بیرون‌زدگی المان‌های دکوری */
         }
         .card:hover {
-            transform: translateY(-3px); /* افکت شناور شدن ملایم‌تر */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08); /* سایه کمی بیشتر هنگام هاور */
+            transform: translateY(-7px); /* افکت شناور شدن برجسته‌تر */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* سایه بیشتر هنگام هاور */
         }
+        /* المان دکوری در گوشه کارت */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 80px;
+            height: 80px;
+            background-color: #ffc107; /* رنگ طلایی */
+            opacity: 0.1;
+            border-radius: 50%;
+            filter: blur(15px);
+            z-index: 0;
+        }
+         .card::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: -20px;
+            width: 60px;
+            height: 60px;
+            background-color: #00bcd4; /* رنگ فیروزه‌ای */
+             opacity: 0.1;
+            border-radius: 50%;
+            filter: blur(15px);
+            z-index: 0;
+        }
+
         .card-title {
-            font-size: 1.3rem; /* اندازه عنوان کمی کوچکتر */
+            font-size: 1.6rem; /* اندازه عنوان بزرگتر */
             font-weight: 700; /* وزن فونت بولد */
-            margin-bottom: 15px;
-            color: #222; /* رنگ تیره‌تر برای عنوان */
-            border-bottom: 1px solid #eee; /* خط زیر عنوان نازک و ملایم */
-            padding-bottom: 10px;
+            margin-bottom: 20px;
+            color: #023e8a; /* رنگ آبی تیره */
+            border-bottom: 2px solid #b2ebf2; /* خط زیر عنوان فیروزه‌ای */
+            padding-bottom: 12px;
+            position: relative; /* برای z-index */
+            z-index: 1;
         }
         .card-section-title {
             font-weight: 700; /* وزن فونت بولد */
-            margin-top: 15px; /* فاصله بیشتر از بالا */
-            margin-bottom: 8px; /* فاصله بیشتر از پایین */
-            color: #444; /* رنگ کمی تیره‌تر */
-            font-size: 0.95rem; /* اندازه کمی کوچکتر */
+            margin-top: 20px; /* فاصله بیشتر از بالا */
+            margin-bottom: 10px; /* فاصله بیشتر از پایین */
+            color: #03045e; /* رنگ آبی خیلی تیره */
+            font-size: 1.05rem; /* اندازه استاندارد */
+            position: relative; /* برای z-index */
+            z-index: 1;
         }
         .card-text {
-            line-height: 1.8; /* افزایش فاصله خطوط برای متن اصلی */
-            color: #555; /* رنگ متن کمی روشن‌تر */
+            line-height: 1.9; /* افزایش بیشتر فاصله خطوط برای متن اصلی */
+            color: #2d3748; /* رنگ متن کمی روشن‌تر */
+            position: relative; /* برای z-index */
+            z-index: 1;
         }
         .details-content {
-            margin-top: 20px; /* فاصله بیشتر از بالا */
-            padding-top: 20px; /* پدینگ داخلی بیشتر */
-            border-top: 1px solid #eee; /* خط جداکننده ملایم */
+            margin-top: 25px; /* فاصله بیشتر از بالا */
+            padding-top: 25px; /* پدینگ داخلی بیشتر */
+            border-top: 1px solid #e0f2f7; /* خط جداکننده فیروزه‌ای ملایم */
+            position: relative; /* برای z-index */
+            z-index: 1;
         }
         .search-box {
-            margin-bottom: 30px;
-            padding: 15px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            border: 1px solid #eee;
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid #b2ebf2; /* حاشیه فیروزه‌ای */
         }
         .search-input {
             width: 100%;
-            padding: 10px 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 12px 18px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px; /* گوشه‌های گردتر */
             font-family: 'Vazirmatn', sans-serif;
-            font-size: 1rem;
+            font-size: 1.05rem; /* اندازه فونت کمی بزرگتر */
+            color: #374151;
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         }
         .search-input:focus {
             outline: none;
-            border-color: #007bff;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+            border-color: #0077b6; /* رنگ آبی جذاب‌تر */
+            box-shadow: 0 0 8px rgba(0, 119, 182, 0.3); /* سایه آبی ملایم‌تر */
+        }
+         h1 {
+            color: #023e8a; /* رنگ آبی تیره برای عنوان اصلی */
+            margin-bottom: 30px; /* فاصله پایین عنوان اصلی */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* سایه ملایم برای خوانایی بهتر */
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="text-2xl font-bold text-center my-10 text-gray-800">اطلاعات میراث فرهنگی ایران</h1>
+        <h1 class="text-3xl font-bold text-center my-10">اطلاعات میراث فرهنگی ایران</h1>
 
         <div class="search-box">
             <input type="text" id="search-input" class="search-input" placeholder="جستجو بر اساس موضوع، مکان، دوره یا جزئیات...">
@@ -162,6 +209,147 @@
                 location: "نامشخص (مکان در متن اصلی مشخص نشده بود)",
                 period: "۱۸۰۰-۱۶۰۰ پ.م.",
                 details: "یک گل نبشته به خط عیلامی کهن. این دوره (که با کشف مکتوبات مشخص می‌شود) آغاز ورود ایران به دوره تاریخی محسوب می‌گردد."
+            },
+            // اضافه شدن اطلاعات جدید از متن سازماندهی شده
+            {
+                topic: "گذر از دوره پیش از تاریخ به دوره تاریخی",
+                description: "دوره پیش از تاریخ ایران با حکومت عیلام میانه به پایان رسیده و ایران وارد دوره تاریخی می‌شود.",
+                location: "ایران",
+                period: "حدود ۱۴۵۰ تا ۱۱۰۰ پیش از میلاد (حکومت عیلام میانه)",
+                details: "نقطه عطف ورود ایران به دوره تاریخی."
+            },
+            {
+                topic: "دوره تاریخی ایران",
+                description: "دوره تاریخی به دو بخش اصلی عصر آهن و تشکیل حکومت تقسیم می‌شود.",
+                location: "ایران",
+                period: "عصر آهن: حدود ۱۵۰۰ تا ۵۵۰ پیش از میلاد. تشکیل حکومت: ۵۵۰ پیش از میلاد تا ۶۵۱ میلادی.",
+                details: "شامل عصر آهن و دوره حکومتی از مادها تا ساسانیان."
+            },
+            {
+                topic: "تغییر مثلث فرهنگ",
+                description: "مثلث فرهنگ از دوره پیش از تاریخ به دوره تاریخی تغییر کرد.",
+                location: "ایران",
+                period: "گذار از دوره پیش از تاریخ به تاریخی",
+                details: "از متافیزیک، انسان، فیزیک به دولت، طبیعت، فراطبیعت."
+            },
+            {
+                topic: "ارتباط پادشاه و دین",
+                description: "در برخی دوره‌ها، پادشاه و دین برای حفظ قدرت خود را از یک تبار دانسته‌اند.",
+                location: "ایران",
+                period: "برخی دوره‌های تاریخی (مانند ساسانیان و پادشاهان اسلامی)",
+                details: "نمونه‌ها: فره ایزدی در ساسانیان و ظل‌الله بودن در پادشاهان اسلامی."
+            },
+            {
+                topic: "خط میخی عیلام میانه",
+                description: "خط میخی عیلام میانه امروزه کاملا رمزگشایی شده است.",
+                location: "عیلام",
+                period: "دوره عیلام میانه",
+                details: "برخلاف خط عیلام باستان که رمزگشایی نشده است."
+            },
+             {
+                topic: "تاریخ عیلام نو",
+                description: "دوره عیلام نو از ۸۱۴ قبل از میلاد آغاز می‌شود.",
+                location: "عیلام",
+                period: "۸۱۴ قبل از میلاد تا تشکیل حکومت هخامنشیان",
+                details: "پایان دوره عیلام با تشکیل حکومت هخامنشیان."
+            },
+            {
+                topic: "زیگورات و آرامگاه هفت تپه",
+                description: "شامل یک زیگورات و آرامگاه خانوادگی با فناوری سقف قوسی.",
+                location: "هفت تپه، خوزستان",
+                period: "دوره عیلام",
+                details: "برای تپتی آهار، پادشاه عیلام، و خانواده‌اش."
+            },
+            {
+                topic: "آرامگاه خدای اینشوشینک در شوش",
+                description: "آرامگاهی برای خدای اینشوشینک بنا شد و یک شیء مفرغین به آن اهدا گردید.",
+                location: "شوش",
+                period: "دوره عیلام",
+                details: "بنا شده توسط پادشاه عیلامی، اینشوشینک. شیء مفرغین نمایشگر آیین مردمان آن عصر بود."
+            },
+            {
+                topic: "زیگورات چغازنبیل",
+                description: "بزرگترین و سالم‌ترین زیگورات کشف شده.",
+                location: "شهر آل اونتش (نزدیک شوش)",
+                period: "دوره عیلام",
+                details: "ساخته شده توسط اونتش گل. به معنی تپه زنبیلی. معبد مطبق. مربع با اضلاع ۱۰۵ متر، ۵ طبقه، ارتفاع ۵۰ متر (۲۵ متر باقی مانده). هر طبقه از سطح زمین آغاز شده. ثبت جهانی یونسکو در ۱۹۷۹."
+            },
+            {
+                topic: "ستون قانون حمورابی",
+                description: "ستون قانون حمورابی بابل به شوش آورده شد.",
+                location: "شوش (اصلی در بابل)",
+                period: "دوره عیلام (پس از حمله به بابل)",
+                details: "توسط شوتروک نهونت در حمله به بابل."
+            },
+            {
+                topic: "تاثیر فرهنگ عیلام در هخامنشیان",
+                description: "فرهنگ عیلامیان در هخامنشیان ادامه یافت.",
+                location: "ایران",
+                period: "دوره هخامنشی",
+                details: "نگارش و خوانش عیلامی زبان درباری کوروش کبیر بود."
+            },
+            {
+                topic: "گوردخمه‌های مادی",
+                description: "گوردخمه‌های مادی عمدتاً در رشته کوه زاگرس قرار دارند.",
+                location: "رشته کوه زاگرس (کرمانشاه، سرپل ذهاب، مهاباد، سلیمانیه عراق، فهلیان فارس)",
+                period: "دوره ماد",
+                details: "نمونه‌ها: سکاوند، صحنه، دکان داوود، فخریکا، قزقاپان، دائو دختر."
+            },
+            {
+                topic: "تپه نوشی جان",
+                description: "دارای آثاری از اشکانی، هخامنشی و مادی.",
+                location: "جاده ملایر به همدان",
+                period: "دوره‌های اشکانی، هخامنشی و مادی",
+                details: "بناهای خشتی شامل انبارهای ذخیره، تالار ستون دار و دو معبد دارای آتشدان."
+            },
+            {
+                topic: "قلعه بسطام",
+                description: "از آثار قوم اورارتوها.",
+                location: "آذربایجان غربی",
+                period: "دوره اورارتو",
+                details: "نمونه‌ای از معماری اورارتویی."
+            },
+            {
+                topic: "آثار قوم مانا",
+                description: "شامل زندان سلیمان، زیویه، حسنلو، قالانچی و ربط.",
+                location: "تخت سلیمان، زیویه، حسنلو، قالانچی، ربط",
+                period: "دوره مانا",
+                details: "مکان‌های باستانی مرتبط با قوم مانا."
+            },
+            {
+                topic: "تپه حسنلو",
+                description: "توالی فرهنگ از نوسنگی تا عصر آهن را در خود جای داده است.",
+                location: "شمال شرقی شهر نقده، آذربایجان غربی",
+                period: "نوسنگی تا عصر آهن (به خصوص فرهنگ مانا)",
+                details: "دارای تالارهای ستون دار (پیش‌نمونه آپادانای هخامنشیان). جام حسنلو در این منطقه کشف شده است."
+            },
+            {
+                topic: "بنیان‌گذاری هخامنشیان",
+                description: "کوروش دوم حکومت ماد و پارس را متحد کرد و هخامنشیان را بنیان نهاد.",
+                location: "ایران",
+                period: "۵۵۰ پیش از میلاد",
+                details: "کوروش دوم پسر کمبوجیه و ماندانا، پدربزرگ خود کوروش اول را شکست داد. حکومت تا ۳۳۰ پیش از میلاد ادامه یافت."
+            },
+            {
+                topic: "پادشاهان هخامنشی و انشان",
+                description: "کوروش اول و کوروش دوم خود را پادشاه انشان می‌نامیدند.",
+                location: "انشان (پایتخت عیلامیان)",
+                period: "دوره هخامنشی (کوروش اول و دوم)",
+                details: "انشان پایتخت عیلامیان بود."
+            },
+            {
+                topic: "پاسارگاد",
+                description: "محل باستانی مرتبط با هخامنشیان.",
+                location: "۱۳۰ کیلومتری شمال شیراز و ۴۸ کیلومتری شمال شرقی تخت جمشید",
+                period: "دوره هخامنشی",
+                details: "گمان می‌رود همان شهر بترکتش در زبان عیلامی باشد."
+            },
+            {
+                topic: "شوش (دوره هخامنشی)",
+                description: "پایتخت دوم عیلامیان و محل کاخ زمستانی داریوش (آپادانا).",
+                location: "شوش",
+                period: "دوره هخامنشی",
+                details: "در مسیر اندیمشک به اهواز. شامل تپه‌های آکروپل، شهر پادشاهی، شهر صنعتگران و آپادانا."
             }
         ];
 
