@@ -6,6 +6,7 @@
     <title>میراث فرهنگی ایران</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400..700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Vazirmatn', sans-serif; /* اعمال فونت وزیر */
@@ -123,10 +124,90 @@
             margin-bottom: 30px; /* فاصله پایین عنوان اصلی */
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* سایه ملایم برای خوانایی بهتر */
         }
+
+        /* Styles for the Shahnameh verse plaque */
+        .shahnameh-plaque {
+            background: linear-gradient(to right, #ffecb3, #ffe082); /* گرادیان طلایی */
+            color: #5d4037; /* رنگ قهوه‌ای تیره برای متن */
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto; /* مرکز قرار گرفتن و فاصله از بالا و پایین */
+            max-width: 600px; /* عرض مشخص برای پلاک */
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 1.2rem; /* اندازه فونت کمی بزرگتر برای نستعلیق */
+            line-height: 2.5; /* افزایش فاصله خطوط برای خوانایی بهتر نستعلیق */
+            border: 2px solid #ffb300; /* حاشیه طلایی پررنگ‌تر */
+            position: relative;
+            overflow: hidden;
+            font-family: 'Noto Nastaliq Urdu', serif; /* اعمال فونت نستعلیق */
+        }
+        .shahnameh-plaque::before {
+            content: '«';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 3rem;
+            color: rgba(93, 64, 55, 0.1); /* رنگ قهوه‌ای کم‌رنگ */
+            font-family: 'Vazirmatn', sans-serif; /* استفاده از فونت اصلی برای علامت نقل قول */
+            z-index: 1;
+        }
+         .shahnameh-plaque::after {
+            content: '»';
+            position: absolute;
+            bottom: 0px;
+            left: 15px;
+            font-size: 3rem;
+             color: rgba(93, 64, 55, 0.1); /* رنگ قهوه‌ای کم‌رنگ */
+            font-family: 'Vazirmatn', sans-serif; /* استفاده از فونت اصلی برای علامت نقل قول */
+            z-index: 1;
+        }
+        .shahnameh-verse {
+            font-weight: 700;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        .shahnameh-author {
+            font-size: 1rem; /* اندازه فونت کمی بزرگتر برای نام نویسنده */
+            color: #795548; /* رنگ قهوه‌ای روشن‌تر */
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Styles for the dedication section */
+        .dedication-section {
+            text-align: center;
+            margin-top: 30px; /* فاصله از تابلوی شعر */
+            margin-bottom: 30px; /* فاصله از عنوان اصلی */
+            color: #0077b6; /* رنگ آبی متوسط */
+            font-size: 1.1rem;
+            line-height: 1.8;
+            font-weight: 500;
+        }
+        .dedication-section p {
+            margin: 5px 0; /* فاصله بین خطوط تقدیم */
+        }
+        .dedication-section .author-name {
+            font-weight: 700; /* نام تهیه کننده پررنگ‌تر */
+            color: #023e8a; /* رنگ آبی تیره */
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="shahnameh-plaque">
+            <div class="shahnameh-verse">
+                بسی رنج بردم در این سال سی <br> عجم زنده کردم بدین پارسی
+            </div>
+            <div class="shahnameh-author">
+                فردوسی پاکزاد
+            </div>
+        </div>
+        <div class="dedication-section">
+            <p>تقدیم به تمام فراگیران گردشگری</p>
+            <p class="author-name">تهیه شده توسط داریوش</p>
+        </div>
         <h1 class="text-3xl font-bold text-center my-10">اطلاعات میراث فرهنگی ایران</h1>
 
         <div class="search-box">
@@ -207,7 +288,7 @@
                 topic: "گل نبشته عیلامی کهن / دوره تاریخی",
                 description: "کشفی که نقطه عطفی مهم در تاریخ ایران محسوب می‌شود و نشان‌دهنده آغاز دوره تاریخی است.",
                 location: "نامشخص (مکان در متن اصلی مشخص نشده بود)",
-                period: "۱۸۰۰-۱۶۰۰ پ.م.",
+                period: "1800-1600 پ.م.",
                 details: "یک گل نبشته به خط عیلامی کهن. این دوره (که با کشف مکتوبات مشخص می‌شود) آغاز ورود ایران به دوره تاریخی محسوب می‌گردد."
             },
             // اضافه شدن اطلاعات جدید از متن سازماندهی شده
@@ -310,7 +391,7 @@
                 details: "نمونه‌ای از معماری اورارتویی."
             },
             {
-                topic: "آثار قوم مانا",
+    topic: "آثار قوم مانا",
                 description: "شامل زندان سلیمان، زیویه، حسنلو، قالانچی و ربط.",
                 location: "تخت سلیمان، زیویه، حسنلو، قالانچی، ربط",
                 period: "دوره مانا",
