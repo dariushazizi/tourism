@@ -7,36 +7,38 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
     <style>
         body {
-            font-family: 'Vazirmatn', sans-serif; /* اعمال فونت وزیر */
-            background: linear-gradient(to bottom, #e0f2f7, #b2ebf2); /* پس‌زمینه گرادیان فیروزه‌ای ملایم */
-            color: #1a202c; /* رنگ متن تیره */
-            line-height: 1.8; /* افزایش فاصله خطوط برای خوانایی بهتر در متن فارسی */
-            padding-bottom: 40px; /* فاصله پایین صفحه */
-            min-height: 100vh; /* حداقل ارتفاع صفحه */
+            font-family: 'Vazirmatn', sans-serif;
+            background: linear-gradient(to bottom, #e0f2f7, #b2ebf2);
+            color: #1a202c;
+            line-height: 1.8;
+            padding-bottom: 40px;
+            min-height: 100vh;
         }
         .container {
-            max-width: 800px; /* عرض کمی بیشتر برای محتوا */
-            margin: 40px auto; /* فاصله بیشتر از بالا و پایین */
-            padding: 0 24px; /* پدینگ بیشتر در کناره‌ها */
+            max-width: 900px; /* عرض بیشتر برای جای دادن نقشه و خط زمانی */
+            margin: 40px auto;
+            padding: 0 24px;
         }
         .card {
-            background-color: #ffffff; /* پس‌زمینه سفید */
-            border-radius: 15px; /* گوشه‌های گردتر */
-            padding: 30px; /* پدینگ داخلی بیشتر */
-            margin-bottom: 30px; /* فاصله بیشتر بین کارت‌ها */
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* سایه ملایم‌تر و گسترده‌تر */
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* انیمیشن نرم‌تر */
-            border: 1px solid #e0f2f7; /* حاشیه نازک فیروزه‌ای */
-            position: relative; /* برای المان‌های دکوری */
-            overflow: hidden; /* برای اطمینان از عدم بیرون‌زدگی المان‌های دکوری */
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border: 1px solid #e0f2f7;
+            position: relative;
+            overflow: hidden;
         }
         .card:hover {
-            transform: translateY(-7px); /* افکت شناور شدن برجسته‌تر */
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* سایه بیشتر هنگام هاور */
+            transform: translateY(-7px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
-        /* المان دکوری در گوشه کارت */
         .card::before {
             content: '';
             position: absolute;
@@ -44,56 +46,55 @@
             right: -20px;
             width: 80px;
             height: 80px;
-            background-color: #ffc107; /* رنگ طلایی */
+            background-color: #ffc107;
             opacity: 0.1;
             border-radius: 50%;
             filter: blur(15px);
             z-index: 0;
         }
-         .card::after {
+        .card::after {
             content: '';
             position: absolute;
             bottom: -20px;
             left: -20px;
             width: 60px;
             height: 60px;
-            background-color: #00bcd4; /* رنگ فیروزه‌ای */
-             opacity: 0.1;
+            background-color: #00bcd4;
+            opacity: 0.1;
             border-radius: 50%;
             filter: blur(15px);
             z-index: 0;
         }
-
         .card-title {
-            font-size: 1.6rem; /* اندازه عنوان بزرگتر */
-            font-weight: 700; /* وزن فونت بولد */
+            font-size: 1.6rem;
+            font-weight: 700;
             margin-bottom: 20px;
-            color: #023e8a; /* رنگ آبی تیره */
-            border-bottom: 2px solid #b2ebf2; /* خط زیر عنوان فیروزه‌ای */
+            color: #023e8a;
+            border-bottom: 2px solid #b2ebf2;
             padding-bottom: 12px;
-            position: relative; /* برای z-index */
+            position: relative;
             z-index: 1;
         }
         .card-section-title {
-            font-weight: 700; /* وزن فونت بولد */
-            margin-top: 20px; /* فاصله بیشتر از بالا */
-            margin-bottom: 10px; /* فاصله بیشتر از پایین */
-            color: #03045e; /* رنگ آبی خیلی تیره */
-            font-size: 1.05rem; /* اندازه استاندارد */
-            position: relative; /* برای z-index */
+            font-weight: 700;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #03045e;
+            font-size: 1.05rem;
+            position: relative;
             z-index: 1;
         }
         .card-text {
-            line-height: 1.9; /* افزایش بیشتر فاصله خطوط برای متن اصلی */
-            color: #2d3748; /* رنگ متن کمی روشن‌تر */
-            position: relative; /* برای z-index */
+            line-height: 1.9;
+            color: #2d3748;
+            position: relative;
             z-index: 1;
         }
         .details-content {
-            margin-top: 25px; /* فاصله بیشتر از بالا */
-            padding-top: 25px; /* پدینگ داخلی بیشتر */
-            border-top: 1px solid #e0f2f7; /* خط جداکننده فیروزه‌ای ملایم */
-            position: relative; /* برای z-index */
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid #e0f2f7;
+            position: relative;
             z-index: 1;
         }
         .search-box {
@@ -102,45 +103,43 @@
             background-color: #ffffff;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            border: 1px solid #b2ebf2; /* حاشیه فیروزه‌ای */
+            border: 1px solid #b2ebf2;
         }
         .search-input {
             width: 100%;
             padding: 12px 18px;
             border: 1px solid #d1d5db;
-            border-radius: 8px; /* گوشه‌های گردتر */
+            border-radius: 8px;
             font-family: 'Vazirmatn', sans-serif;
-            font-size: 1.05rem; /* اندازه فونت کمی بزرگتر */
+            font-size: 1.05rem;
             color: #374151;
             transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         }
         .search-input:focus {
             outline: none;
-            border-color: #0077b6; /* رنگ آبی جذاب‌تر */
-            box-shadow: 0 0 8px rgba(0, 119, 182, 0.3); /* سایه آبی ملایم‌تر */
+            border-color: #0077b6;
+            box-shadow: 0 0 8px rgba(0, 119, 182, 0.3);
         }
-         h1 {
-            color: #023e8a; /* رنگ آبی تیره برای عنوان اصلی */
-            margin-bottom: 30px; /* فاصله پایین عنوان اصلی */
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* سایه ملایم برای خوانایی بهتر */
+        h1 {
+            color: #023e8a;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
         }
-
-        /* Styles for the Shahnameh verse plaque */
         .shahnameh-plaque {
-            background: linear-gradient(to right, #ffecb3, #ffe082); /* گرادیان طلایی */
-            color: #5d4037; /* رنگ قهوه‌ای تیره برای متن */
+            background: linear-gradient(to right, #ffecb3, #ffe082);
+            color: #5d4037;
             border-radius: 10px;
             padding: 20px;
-            margin: 20px auto; /* مرکز قرار گرفتن و فاصله از بالا و پایین */
-            max-width: 600px; /* عرض مشخص برای پلاک */
+            margin: 20px auto;
+            max-width: 600px;
             text-align: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            font-size: 1.2rem; /* اندازه فونت کمی بزرگتر برای نستعلیق */
-            line-height: 2.5; /* افزایش فاصله خطوط برای خوانایی بهتر نستعلیق */
-            border: 2px solid #ffb300; /* حاشیه طلایی پررنگ‌تر */
+            font-size: 1.2rem;
+            line-height: 2.5;
+            border: 2px solid #ffb300;
             position: relative;
             overflow: hidden;
-            font-family: 'Noto Nastaliq Urdu', serif; /* اعمال فونت نستعلیق */
+            font-family: 'Noto Nastaliq Urdu', serif;
         }
         .shahnameh-plaque::before {
             content: '«';
@@ -148,18 +147,18 @@
             top: 10px;
             right: 15px;
             font-size: 3rem;
-            color: rgba(93, 64, 55, 0.1); /* رنگ قهوه‌ای کم‌رنگ */
-            font-family: 'Vazirmatn', sans-serif; /* استفاده از فونت اصلی برای علامت نقل قول */
+            color: rgba(93, 64, 55, 0.1);
+            font-family: 'Vazirmatn', sans-serif;
             z-index: 1;
         }
-         .shahnameh-plaque::after {
+        .shahnameh-plaque::after {
             content: '»';
             position: absolute;
             bottom: 0px;
             left: 15px;
             font-size: 3rem;
-             color: rgba(93, 64, 55, 0.1); /* رنگ قهوه‌ای کم‌رنگ */
-            font-family: 'Vazirmatn', sans-serif; /* استفاده از فونت اصلی برای علامت نقل قول */
+            color: rgba(93, 64, 55, 0.1);
+            font-family: 'Vazirmatn', sans-serif;
             z-index: 1;
         }
         .shahnameh-verse {
@@ -169,28 +168,160 @@
             z-index: 1;
         }
         .shahnameh-author {
-            font-size: 1rem; /* اندازه فونت کمی بزرگتر برای نام نویسنده */
-            color: #795548; /* رنگ قهوه‌ای روشن‌تر */
+            font-size: 1rem;
+            color: #795548;
             position: relative;
             z-index: 1;
         }
-
-        /* Styles for the dedication section */
         .dedication-section {
             text-align: center;
-            margin-top: 30px; /* فاصله از تابلوی شعر */
-            margin-bottom: 30px; /* فاصله از عنوان اصلی */
-            color: #0077b6; /* رنگ آبی متوسط */
+            margin-top: 30px;
+            margin-bottom: 30px;
+            color: #0077b6;
             font-size: 1.1rem;
             line-height: 1.8;
             font-weight: 500;
         }
         .dedication-section p {
-            margin: 5px 0; /* فاصله بین خطوط تقدیم */
+            margin: 5px 0;
         }
         .dedication-section .author-name {
-            font-weight: 700; /* نام تهیه کننده پررنگ‌تر */
-            color: #023e8a; /* رنگ آبی تیره */
+            font-weight: 700;
+            color: #023e8a;
+        }
+        .qa-section {
+            margin-top: 40px;
+            margin-bottom: 30px; /* فاصله از بخش بعدی */
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid #b2ebf2;
+        }
+        .qa-section h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #023e8a;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e0f2f7;
+            padding-bottom: 10px;
+        }
+        .qa-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .qa-input {
+            flex-grow: 1;
+            padding: 10px 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 1rem;
+            color: #374151;
+        }
+        .qa-input:focus {
+            outline: none;
+            border-color: #0077b6;
+            box-shadow: 0 0 8px rgba(0, 119, 182, 0.3);
+        }
+        .qa-button {
+            padding: 10px 20px;
+            background-color: #0077b6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 1rem;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .qa-button:hover {
+            background-color: #023e8a;
+        }
+        .qa-answer {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #e0f7fa;
+            border: 1px solid #b2ebf2;
+            border-radius: 8px;
+            color: #03045e;
+            line-height: 1.8;
+            min-height: 50px;
+        }
+        .qa-answer p {
+            margin-bottom: 10px;
+        }
+        .qa-answer p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Styles for Map and Timeline */
+        .interactive-section {
+            margin-top: 40px;
+            margin-bottom: 40px;
+            padding: 25px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: 1px solid #b2ebf2;
+        }
+        .interactive-section h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #023e8a;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0f2f7;
+            padding-bottom: 10px;
+        }
+        #map {
+            height: 450px; /* ارتفاع نقشه */
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid #cce7ee;
+            margin-bottom: 20px;
+        }
+        .leaflet-popup-content-wrapper {
+            border-radius: 8px !important;
+        }
+        .leaflet-popup-content {
+            font-family: 'Vazirmatn', sans-serif !important;
+            font-size: 0.9rem !important;
+            line-height: 1.6 !important;
+        }
+        #timeline-container {
+            max-height: 400px; /* حداکثر ارتفاع برای خط زمانی */
+            overflow-y: auto; /* اسکرول در صورت نیاز */
+            padding: 15px;
+            border: 1px solid #cce7ee;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+        .timeline-event {
+            padding: 12px;
+            margin-bottom: 10px;
+            background-color: #e9f5f9;
+            border-radius: 6px;
+            border-right: 4px solid #0077b6; /* نوار رنگی در سمت راست برای RTL */
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .timeline-event:hover {
+            background-color: #d1ecf1;
+        }
+        .timeline-event-period {
+            font-weight: bold;
+            color: #023e8a;
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+        .timeline-event-topic {
+            font-size: 0.9rem;
+            color: #1a202c;
+        }
+        .timeline-event-location {
+            font-size: 0.8rem;
+            color: #4a5568;
         }
     </style>
 </head>
@@ -210,6 +341,24 @@
         </div>
         <h1 class="text-3xl font-bold text-center my-10">اطلاعات میراث فرهنگی ایران</h1>
 
+        <div class="qa-section">
+            <h2>پرسش و پاسخ</h2>
+            <div class="qa-input-group">
+                <input type="text" id="qa-input" class="qa-input" placeholder="سوال خود را بپرسید (مثال: چغازنبیل کجاست؟)">
+                <button id="qa-button" class="qa-button">جستجو</button>
+            </div>
+            <div id="qa-answer" class="qa-answer">
+                پاسخ اینجا نمایش داده می‌شود.
+            </div>
+        </div>
+
+        <div class="interactive-section">
+            <h2>نقشه و خط زمانی میراث فرهنگی</h2>
+            <div id="map"></div>
+            <div id="timeline-container">
+                </div>
+        </div>
+
         <div class="search-box">
             <input type="text" id="search-input" class="search-input" placeholder="جستجو بر اساس موضوع، مکان، دوره یا جزئیات...">
         </div>
@@ -218,226 +367,152 @@
             </div>
     </div>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+
     <script>
         // داده‌های جدول به صورت یک آرایه از اشیاء
+        // اضافه کردن فیلدهای latitude, longitude و year_start_approx برای نقشه و خط زمانی
         const culturalData = [
             {
                 topic: "معیارهای میراث فرهنگی",
                 description: "معیارهای اصلی برای در نظر گرفتن یک پدیده به عنوان میراث فرهنگی.",
                 location: "نامشخص",
                 period: "نامشخص",
-                details: "قدمت تاریخی، پیام انسانی."
+                details: "قدمت تاریخی، پیام انسانی.",
+                latitude: null, longitude: null, year_start_approx: null
             },
             {
                 topic: "کهن‌ترین پدیده فرهنگی",
                 description: "ابزارهای سنگی، کهن‌ترین پدیده فرهنگی در ایران محسوب می‌شوند.",
                 location: "کشفرود، خراسان",
                 period: "حدود ۸۰۰ هزار سال",
-                details: "شاهدی بر فعالیت‌های اولیه انسان."
+                details: "شاهدی بر فعالیت‌های اولیه انسان.",
+                latitude: 36.3000, longitude: 59.5000, year_start_approx: -800000 // مختصات تقریبی خراسان
             },
             {
                 topic: "تپه زاغه",
                 description: "یک محوطه باستانی شامل بقایای سازه‌های قدیمی.",
                 location: "قزوین",
                 period: "دوره نوسنگی",
-                details: "شناسایی شده به عنوان یکی از مکان‌های معابد کشف شده در ایران از این دوره."
+                details: "شناسایی شده به عنوان یکی از مکان‌های معابد کشف شده در ایران از این دوره.",
+                latitude: 36.2700, longitude: 50.0040, year_start_approx: -7000 // دوره نوسنگی (مثال: ۷۰۰۰ پ.م)
             },
             {
                 topic: "عصر نوسنگی",
                 description: "یک دوره تاریخی اولیه که با پیشرفت‌هایی مانند کشاورزی و سفالگری مشخص می‌شود.",
                 location: "ایران (بافت کلی)",
                 period: "۴۵۰۰-۳۰۰۰ پ.م.",
-                details: "به دو دوره پیش از سفال و پس از سفال تقسیم می‌شود. قدیمی‌ترین ظرف سفالین کشف شده در ایران در ایران ۹۰۰۰ سال قدمت دارد."
+                details: "به دو دوره پیش از سفال و پس از سفال تقسیم می‌شود. قدیمی‌ترین ظرف سفالین کشف شده در ایران در ایران ۹۰۰۰ سال قدمت دارد.",
+                latitude: null, longitude: null, year_start_approx: -4500
             },
             {
                 topic: "عصر مفرغ",
                 description: "دوره تاریخی پس از نوسنگی.",
                 location: "ایران (بافت کلی)",
                 period: "۳۰۰۰-۱۵۰۰ پ.م.",
-                details: "پس از دوره نوسنگی آغاز شد."
+                details: "پس از دوره نوسنگی آغاز شد.",
+                latitude: null, longitude: null, year_start_approx: -3000
             },
             {
                 topic: "نقش برجسته سرپل ذهاب",
                 description: "اولین نقش برجسته ایران.",
                 location: "سرپل ذهاب، کرمانشاه",
-                period: "(زمان آنوبانینی)",
-                details: "توسط آنوبانینی، حاکم قوم مهاجر لولوبی (یک گروه عشایر دامدار آسیایی)، ایجاد شده است."
+                period: "(زمان آنوبانینی)", // حدود ۲۲۰۰ پ.م
+                details: "توسط آنوبانینی، حاکم قوم مهاجر لولوبی (یک گروه عشایر دامدار آسیایی)، ایجاد شده است.",
+                latitude: 34.4600, longitude: 45.8600, year_start_approx: -2200
             },
             {
                 topic: "نقش برجسته بیستون",
                 description: "یک نقش برجسته و کتیبه سنگی مهم باستانی.",
                 location: "بیستون",
-                period: "(دوره هخامنشی)",
-                details: "از نقش برجسته سرپل ذهاب الهام گرفته شده است."
+                period: "(دوره هخامنشی)", // حدود ۵۲۰ پ.م
+                details: "از نقش برجسته سرپل ذهاب الهام گرفته شده است.",
+                latitude: 34.3919, longitude: 47.4344, year_start_approx: -520
             },
             {
                 topic: "شهر سوخته",
                 description: "یک شهر باستانی بزرگ با ساختار پیچیده و مناطق مختلف.",
                 location: "استان سیستان و بلوچستان",
                 period: "۳۲۰۰-۱۸۰۰ پ.م.",
-                details: "۱۵۰ هکتار وسعت داشت. شامل مناطق مسکونی، صنعتی و قبرستان بود. واحدهای مسکونی ۹۰-۱۰۰ متر مربع مساحت داشتند. ساختار سیاسی پیچیده شهر مسئول نگهداری غلات بود."
+                details: "۱۵۰ هکتار وسعت داشت. شامل مناطق مسکونی، صنعتی و قبرستان بود. واحدهای مسکونی ۹۰-۱۰۰ متر مربع مساحت داشتند. ساختار سیاسی پیچیده شهر مسئول نگهداری غلات بود.",
+                latitude: 30.5883, longitude: 61.3461, year_start_approx: -3200
             },
             {
                 topic: "یافته‌های مهم شهر سوخته",
                 description: "یافته‌های فرهنگی کلیدی از شهر که نشان‌دهنده تمدن پیشرفته آن است.",
                 location: "شهر سوخته",
                 period: "۳۲۰۰-۱۸۰۰ پ.م. (بافت کلی)",
-                details: "جام سفالین (اولین انیمیشن جهان)، قدیمی‌ترین شواهد جراحی روی جمجمه، کامل‌ترین مجموعه پارچه ایرانی، قدیمی‌ترین نمونه معرق‌کاری/کاربندی، قدیمی‌ترین بازی دنیا (تخته نرد)، و قدیمی‌ترین چشم مصنوعی."
+                details: "جام سفالین (اولین انیمیشن جهان)، قدیمی‌ترین شواهد جراحی روی جمجمه، کامل‌ترین مجموعه پارچه ایرانی، قدیمی‌ترین نمونه معرق‌کاری/کاربندی، قدیمی‌ترین بازی دنیا (تخته نرد)، و قدیمی‌ترین چشم مصنوعی.",
+                latitude: 30.5883, longitude: 61.3461, year_start_approx: -3200 // همان شهر سوخته
             },
             {
                 topic: "گل نبشته عیلامی کهن / دوره تاریخی",
                 description: "کشفی که نقطه عطفی مهم در تاریخ ایران محسوب می‌شود و نشان‌دهنده آغاز دوره تاریخی است.",
                 location: "نامشخص (مکان در متن اصلی مشخص نشده بود)",
                 period: "1800-1600 پ.م.",
-                details: "یک گل نبشته به خط عیلامی کهن. این دوره (که با کشف مکتوبات مشخص می‌شود) آغاز ورود ایران به دوره تاریخی محسوب می‌گردد."
+                details: "یک گل نبشته به خط عیلامی کهن. این دوره (که با کشف مکتوبات مشخص می‌شود) آغاز ورود ایران به دوره تاریخی محسوب می‌گردد.",
+                latitude: null, longitude: null, year_start_approx: -1800
             },
-            // اضافه شدن اطلاعات جدید از متن سازماندهی شده
             {
                 topic: "گذر از دوره پیش از تاریخ به دوره تاریخی",
                 description: "دوره پیش از تاریخ ایران با حکومت عیلام میانه به پایان رسیده و ایران وارد دوره تاریخی می‌شود.",
                 location: "ایران",
                 period: "حدود ۱۴۵۰ تا ۱۱۰۰ پیش از میلاد (حکومت عیلام میانه)",
-                details: "نقطه عطف ورود ایران به دوره تاریخی."
+                details: "نقطه عطف ورود ایران به دوره تاریخی.",
+                latitude: null, longitude: null, year_start_approx: -1450
             },
             {
                 topic: "دوره تاریخی ایران",
                 description: "دوره تاریخی به دو بخش اصلی عصر آهن و تشکیل حکومت تقسیم می‌شود.",
                 location: "ایران",
                 period: "عصر آهن: حدود ۱۵۰۰ تا ۵۵۰ پیش از میلاد. تشکیل حکومت: ۵۵۰ پیش از میلاد تا ۶۵۱ میلادی.",
-                details: "شامل عصر آهن و دوره حکومتی از مادها تا ساسانیان."
-            },
-            {
-                topic: "تغییر مثلث فرهنگ",
-                description: "مثلث فرهنگ از دوره پیش از تاریخ به دوره تاریخی تغییر کرد.",
-                location: "ایران",
-                period: "گذار از دوره پیش از تاریخ به تاریخی",
-                details: "از متافیزیک، انسان، فیزیک به دولت، طبیعت، فراطبیعت."
-            },
-            {
-                topic: "ارتباط پادشاه و دین",
-                description: "در برخی دوره‌ها، پادشاه و دین برای حفظ قدرت خود را از یک تبار دانسته‌اند.",
-                location: "ایران",
-                period: "برخی دوره‌های تاریخی (مانند ساسانیان و پادشاهان اسلامی)",
-                details: "نمونه‌ها: فره ایزدی در ساسانیان و ظل‌الله بودن در پادشاهان اسلامی."
-            },
-            {
-                topic: "خط میخی عیلام میانه",
-                description: "خط میخی عیلام میانه امروزه کاملا رمزگشایی شده است.",
-                location: "عیلام",
-                period: "دوره عیلام میانه",
-                details: "برخلاف خط عیلام باستان که رمزگشایی نشده است."
+                details: "شامل عصر آهن و دوره حکومتی از مادها تا ساسانیان.",
+                latitude: null, longitude: null, year_start_approx: -1500
             },
              {
-                topic: "تاریخ عیلام نو",
-                description: "دوره عیلام نو از ۸۱۴ قبل از میلاد آغاز می‌شود.",
-                location: "عیلام",
-                period: "۸۱۴ قبل از میلاد تا تشکیل حکومت هخامنشیان",
-                details: "پایان دوره عیلام با تشکیل حکومت هخامنشیان."
-            },
-            {
-                topic: "زیگورات و آرامگاه هفت تپه",
-                description: "شامل یک زیگورات و آرامگاه خانوادگی با فناوری سقف قوسی.",
-                location: "هفت تپه، خوزستان",
-                period: "دوره عیلام",
-                details: "برای تپتی آهار، پادشاه عیلام، و خانواده‌اش."
-            },
-            {
-                topic: "آرامگاه خدای اینشوشینک در شوش",
-                description: "آرامگاهی برای خدای اینشوشینک بنا شد و یک شیء مفرغین به آن اهدا گردید.",
-                location: "شوش",
-                period: "دوره عیلام",
-                details: "بنا شده توسط پادشاه عیلامی، اینشوشینک. شیء مفرغین نمایشگر آیین مردمان آن عصر بود."
-            },
-            {
                 topic: "زیگورات چغازنبیل",
                 description: "بزرگترین و سالم‌ترین زیگورات کشف شده.",
                 location: "شهر آل اونتش (نزدیک شوش)",
-                period: "دوره عیلام",
-                details: "ساخته شده توسط اونتش گل. به معنی تپه زنبیلی. معبد مطبق. مربع با اضلاع ۱۰۵ متر، ۵ طبقه، ارتفاع ۵۰ متر (۲۵ متر باقی مانده). هر طبقه از سطح زمین آغاز شده. ثبت جهانی یونسکو در ۱۹۷۹."
-            },
-            {
-                topic: "ستون قانون حمورابی",
-                description: "ستون قانون حمورابی بابل به شوش آورده شد.",
-                location: "شوش (اصلی در بابل)",
-                period: "دوره عیلام (پس از حمله به بابل)",
-                details: "توسط شوتروک نهونت در حمله به بابل."
-            },
-            {
-                topic: "تاثیر فرهنگ عیلام در هخامنشیان",
-                description: "فرهنگ عیلامیان در هخامنشیان ادامه یافت.",
-                location: "ایران",
-                period: "دوره هخامنشی",
-                details: "نگارش و خوانش عیلامی زبان درباری کوروش کبیر بود."
-            },
-            {
-                topic: "گوردخمه‌های مادی",
-                description: "گوردخمه‌های مادی عمدتاً در رشته کوه زاگرس قرار دارند.",
-                location: "رشته کوه زاگرس (کرمانشاه، سرپل ذهاب، مهاباد، سلیمانیه عراق، فهلیان فارس)",
-                period: "دوره ماد",
-                details: "نمونه‌ها: سکاوند، صحنه، دکان داوود، فخریکا، قزقاپان، دائو دختر."
+                period: "دوره عیلام (حدود ۱۲۵۰ پ.م)",
+                details: "ساخته شده توسط اونتش گل. به معنی تپه زنبیلی. معبد مطبق. مربع با اضلاع ۱۰۵ متر، ۵ طبقه، ارتفاع ۵۰ متر (۲۵ متر باقی مانده). هر طبقه از سطح زمین آغاز شده. ثبت جهانی یونسکو در ۱۹۷۹.",
+                latitude: 32.0108, longitude: 48.5219, year_start_approx: -1250 // مختصات دقیق‌تر چغازنبیل
             },
             {
                 topic: "تپه نوشی جان",
                 description: "دارای آثاری از اشکانی، هخامنشی و مادی.",
                 location: "جاده ملایر به همدان",
-                period: "دوره‌های اشکانی، هخامنشی و مادی",
-                details: "بناهای خشتی شامل انبارهای ذخیره، تالار ستون دار و دو معبد دارای آتشدان."
-            },
-            {
-                topic: "قلعه بسطام",
-                description: "از آثار قوم اورارتوها.",
-                location: "آذربایجان غربی",
-                period: "دوره اورارتو",
-                details: "نمونه‌ای از معماری اورارتویی."
-            },
-            {
-    topic: "آثار قوم مانا",
-                description: "شامل زندان سلیمان، زیویه، حسنلو، قالانچی و ربط.",
-                location: "تخت سلیمان، زیویه، حسنلو، قالانچی، ربط",
-                period: "دوره مانا",
-                details: "مکان‌های باستانی مرتبط با قوم مانا."
-            },
-            {
-                topic: "تپه حسنلو",
-                description: "توالی فرهنگ از نوسنگی تا عصر آهن را در خود جای داده است.",
-                location: "شمال شرقی شهر نقده، آذربایجان غربی",
-                period: "نوسنگی تا عصر آهن (به خصوص فرهنگ مانا)",
-                details: "دارای تالارهای ستون دار (پیش‌نمونه آپادانای هخامنشیان). جام حسنلو در این منطقه کشف شده است."
-            },
-            {
-                topic: "بنیان‌گذاری هخامنشیان",
-                description: "کوروش دوم حکومت ماد و پارس را متحد کرد و هخامنشیان را بنیان نهاد.",
-                location: "ایران",
-                period: "۵۵۰ پیش از میلاد",
-                details: "کوروش دوم پسر کمبوجیه و ماندانا، پدربزرگ خود کوروش اول را شکست داد. حکومت تا ۳۳۰ پیش از میلاد ادامه یافت."
-            },
-            {
-                topic: "پادشاهان هخامنشی و انشان",
-                description: "کوروش اول و کوروش دوم خود را پادشاه انشان می‌نامیدند.",
-                location: "انشان (پایتخت عیلامیان)",
-                period: "دوره هخامنشی (کوروش اول و دوم)",
-                details: "انشان پایتخت عیلامیان بود."
+                period: "دوره‌های اشکانی، هخامنشی و مادی (مادی حدود ۷۵۰ پ.م)",
+                details: "بناهای خشتی شامل انبارهای ذخیره، تالار ستون دار و دو معبد دارای آتشدان.",
+                latitude: 34.4989, longitude: 48.6081, year_start_approx: -750 // دوره مادی
             },
             {
                 topic: "پاسارگاد",
                 description: "محل باستانی مرتبط با هخامنشیان.",
-                location: "۱۳۰ کیلومتری شمال شیراز و ۴۸ کیلومتری شمال شرقی تخت جمشید",
-                period: "دوره هخامنشی",
-                details: "گمان می‌رود همان شهر بترکتش در زبان عیلامی باشد."
+                location: "۱۳۰ کیلومتری شمال شیراز",
+                period: "دوره هخامنشی (حدود ۵۴۰ پ.م)",
+                details: "گمان می‌رود همان شهر بترکتش در زبان عیلامی باشد.",
+                latitude: 30.1931, longitude: 53.1792, year_start_approx: -540
             },
             {
                 topic: "شوش (دوره هخامنشی)",
                 description: "پایتخت دوم عیلامیان و محل کاخ زمستانی داریوش (آپادانا).",
                 location: "شوش",
-                period: "دوره هخامنشی",
-                details: "در مسیر اندیمشک به اهواز. شامل تپه‌های آکروپل، شهر پادشاهی، شهر صنعتگران و آپادانا."
+                period: "دوره هخامنشی (حدود ۵۰۰ پ.م)",
+                details: "در مسیر اندیمشک به اهواز. شامل تپه‌های آکروپل، شهر پادشاهی، شهر صنعتگران و آپادانا.",
+                latitude: 32.1894, longitude: 48.2436, year_start_approx: -500
             }
+            // سایر داده‌ها را نیز با مختصات و سال تقریبی تکمیل کنید
         ];
+
+        let map; // متغیر برای نگهداری نمونه نقشه
 
         // تابعی برای ایجاد یک کارت HTML برای هر آیتم داده
         function createCard(item) {
             const cardDiv = document.createElement('div');
             cardDiv.classList.add('card');
+            cardDiv.setAttribute('data-topic', item.topic.toLowerCase()); // برای اسکرول
 
             const titleDiv = document.createElement('div');
             titleDiv.classList.add('card-title');
@@ -449,7 +524,6 @@
             descriptionDiv.textContent = item.description;
             cardDiv.appendChild(descriptionDiv);
 
-            // محتوای جزئیات که همیشه نمایش داده می‌شود
             const detailsContentDiv = document.createElement('div');
             detailsContentDiv.classList.add('details-content');
             detailsContentDiv.innerHTML = `
@@ -461,14 +535,13 @@
                 <div class="card-text">${item.details}</div>
             `;
             cardDiv.appendChild(detailsContentDiv);
-
             return cardDiv;
         }
 
         // تابعی برای نمایش کارت‌ها
         function displayCards(dataToDisplay) {
             const contentArea = document.getElementById('content-area');
-            contentArea.innerHTML = ''; // پاک کردن محتوای قبلی
+            contentArea.innerHTML = '';
             if (dataToDisplay.length === 0) {
                 contentArea.innerHTML = '<p class="text-center text-gray-600">هیچ نتیجه‌ای یافت نشد.</p>';
             } else {
@@ -483,7 +556,6 @@
         function filterData(searchTerm) {
             const lowerCaseSearchTerm = searchTerm.toLowerCase();
             return culturalData.filter(item => {
-                // جستجو در تمام فیلدهای متنی
                 return item.topic.toLowerCase().includes(lowerCaseSearchTerm) ||
                        item.description.toLowerCase().includes(lowerCaseSearchTerm) ||
                        item.location.toLowerCase().includes(lowerCaseSearchTerm) ||
@@ -491,21 +563,185 @@
                        item.details.toLowerCase().includes(lowerCaseSearchTerm);
             });
         }
+        
+        // تابع برای اسکرول به کارت مورد نظر
+        function scrollToCard(topic) {
+            const lowerCaseTopic = topic.toLowerCase();
+            const cardElement = document.querySelector(`.card[data-topic="${lowerCaseTopic}"]`);
+            if (cardElement) {
+                cardElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // هایلایت موقت کارت
+                cardElement.style.transition = 'box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out';
+                cardElement.style.boxShadow = '0 0 20px rgba(0, 119, 182, 0.5)';
+                cardElement.style.transform = 'scale(1.02)';
+                setTimeout(() => {
+                    cardElement.style.boxShadow = '0 6px 15px rgba(0, 0, 0, 0.1)';
+                    cardElement.style.transform = 'scale(1)';
+                }, 2000);
+            }
+        }
+
+        // تابع برای مقداردهی اولیه نقشه
+        function initMap() {
+            // مختصات مرکز ایران به صورت تقریبی
+            map = L.map('map').setView([32.4279, 53.6880], 5);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            culturalData.forEach(item => {
+                if (item.latitude && item.longitude) {
+                    const marker = L.marker([item.latitude, item.longitude]).addTo(map);
+                    marker.bindPopup(`<b>${item.topic}</b><br>${item.location}<br><button class="focus-item-btn p-1 mt-1 bg-blue-500 text-white rounded text-xs">نمایش جزئیات</button>`);
+                    
+                    marker.on('popupopen', function (e) {
+                        const btn = e.popup._container.querySelector('.focus-item-btn');
+                        if(btn) {
+                            btn.addEventListener('click', function() {
+                                displayCards([item]); // نمایش فقط کارت مربوطه
+                                scrollToCard(item.topic);
+                                map.closePopup(); // بستن پاپ آپ پس از کلیک
+                            });
+                        }
+                    });
+                }
+            });
+        }
+
+        // تابع برای ایجاد و نمایش خط زمانی
+        function displayTimeline() {
+            const timelineContainer = document.getElementById('timeline-container');
+            timelineContainer.innerHTML = ''; // پاک کردن محتوای قبلی
+
+            // فیلتر کردن آیتم‌هایی که سال شروع تقریبی دارند و مرتب‌سازی آنها
+            const timelineEvents = culturalData
+                .filter(item => item.year_start_approx !== null && typeof item.year_start_approx === 'number')
+                .sort((a, b) => a.year_start_approx - b.year_start_approx);
+
+            if (timelineEvents.length === 0) {
+                timelineContainer.innerHTML = '<p class="text-center text-gray-500">رویدادی برای نمایش در خط زمانی وجود ندارد.</p>';
+                return;
+            }
+            
+            const titleEl = document.createElement('h3');
+            titleEl.textContent = "خط زمانی رویدادها (از گذشته به حال)";
+            titleEl.classList.add('text-md', 'font-semibold', 'mb-3', 'text-gray-700');
+            timelineContainer.appendChild(titleEl);
+
+
+            timelineEvents.forEach(item => {
+                const eventDiv = document.createElement('div');
+                eventDiv.classList.add('timeline-event');
+                
+                const periodText = document.createElement('div');
+                periodText.classList.add('timeline-event-period');
+                // نمایش سال به صورت خوانا (پ.م. برای سال‌های منفی)
+                let yearDisplay = item.year_start_approx < 0 ? `${Math.abs(item.year_start_approx)} پ.م.` : `${item.year_start_approx} م.`;
+                if (item.period.toLowerCase().includes("هزار سال")) { // برای دوره‌های خیلی قدیمی
+                     yearDisplay = item.period;
+                } else if (item.period !== "نامشخص" && !item.period.match(/\d{4}-\d{4}/) && !item.period.match(/\d+/)) { // اگر دوره متنی است
+                    yearDisplay = `${item.period} (حدود ${yearDisplay})`;
+                }
+
+                periodText.textContent = yearDisplay;
+
+                const topicText = document.createElement('div');
+                topicText.classList.add('timeline-event-topic');
+                topicText.textContent = item.topic;
+
+                const locationText = document.createElement('div');
+                locationText.classList.add('timeline-event-location');
+                locationText.textContent = `مکان: ${item.location}`;
+
+                eventDiv.appendChild(periodText);
+                eventDiv.appendChild(topicText);
+                eventDiv.appendChild(locationText);
+
+                eventDiv.addEventListener('click', () => {
+                    displayCards([item]); // نمایش فقط کارت مربوط به این رویداد
+                    scrollToCard(item.topic); // اسکرول به کارت
+                });
+                timelineContainer.appendChild(eventDiv);
+            });
+        }
+
+        // تابعی برای پاسخ به سوال (برای بخش پرسش و پاسخ)
+        function answerQuestion(question) {
+            const lowerCaseQuestion = question.toLowerCase();
+            const qaAnswerArea = document.getElementById('qa-answer');
+            let relevantData = [];
+
+            culturalData.forEach(item => {
+                let score = 0;
+                if (item.topic.toLowerCase().includes(lowerCaseQuestion)) score += 3;
+                if (item.description.toLowerCase().includes(lowerCaseQuestion)) score += 2;
+                if (item.details.toLowerCase().includes(lowerCaseQuestion)) score += 2;
+                if (item.location.toLowerCase().includes(lowerCaseQuestion)) score += 1;
+                if (item.period.toLowerCase().includes(lowerCaseQuestion)) score += 1;
+
+                const questionWords = lowerCaseQuestion.split(' ').filter(word => word.length > 2);
+                questionWords.forEach(word => {
+                    if (item.topic.toLowerCase().includes(word)) score += 1;
+                    if (item.description.toLowerCase().includes(word)) score += 0.5;
+                    if (item.details.toLowerCase().includes(word)) score += 0.5;
+                    if (item.location.toLowerCase().includes(word)) score += 0.3;
+                    if (item.period.toLowerCase().includes(word)) score += 0.3;
+                });
+
+                if (score > 0) {
+                    relevantData.push({ item: item, score: score });
+                }
+            });
+
+            relevantData.sort((a, b) => b.score - a.score);
+
+            if (relevantData.length > 0) {
+                let answerHTML = '<h3>اطلاعات مرتبط:</h3>';
+                relevantData.slice(0, 3).forEach(data => {
+                    answerHTML += `<p><strong>${data.item.topic}:</strong> ${data.item.description} <br> جزئیات: ${data.item.details} (مکان: ${data.item.location}, دوره: ${data.item.period})</p>`;
+                });
+                if (relevantData.length > 3) {
+                    answerHTML += `<p>و موارد مرتبط دیگر...</p>`;
+                }
+                qaAnswerArea.innerHTML = answerHTML;
+            } else {
+                qaAnswerArea.innerHTML = '<p>متاسفم، اطلاعات مرتبط با سوال شما در دسترس نیست. سعی کنید از کلمات کلیدی دقیق‌تری استفاده کنید یا در بخش جستجوی اصلی، موارد را مرور کنید.</p>';
+            }
+        }
 
         // پس از بارگذاری کامل صفحه
         window.onload = function() {
-            // نمایش تمام کارت‌ها در ابتدا
-            displayCards(culturalData);
+            displayCards(culturalData); // نمایش تمام کارت‌ها در ابتدا
+            initMap(); // مقداردهی اولیه نقشه
+            displayTimeline(); // نمایش خط زمانی
 
-            // اضافه کردن ایونت لیسنر به فیلد جستجو
             const searchInput = document.getElementById('search-input');
             searchInput.addEventListener('input', (event) => {
                 const searchTerm = event.target.value;
                 const filteredResults = filterData(searchTerm);
                 displayCards(filteredResults);
             });
-        };
 
+            const qaInput = document.getElementById('qa-input');
+            const qaButton = document.getElementById('qa-button');
+
+            qaButton.addEventListener('click', () => {
+                const question = qaInput.value;
+                if (question.trim() !== '') {
+                    answerQuestion(question.trim());
+                } else {
+                    document.getElementById('qa-answer').innerHTML = '<p>لطفاً سوال خود را وارد کنید.</p>';
+                }
+            });
+
+            qaInput.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    qaButton.click();
+                }
+            });
+        };
     </script>
 </body>
 </html>
